@@ -1,14 +1,28 @@
 # iOS Guidelines
 
-## General
-- Prefer c-functions / constants over #define.
-
 ## Project Structure
 - Organized .xcodeproj: files are grouped by layers (Presentation, Domain/Model, Infrastructure, etc), responsibilities (UI, Model, Logic, Vendor, etc), roles, etc. No flat structure allowed.
 - Organized project folder: desirable but not required to keep file structure in sync with .xcodeproj
 - *One .m / .swift == One class*. No extra classes allowed.
 - Localization is required even for case, when you have only one language. Therefore in future it worth nothing to add extra language.
 - Images and other resources (.plist) should be grouped as well (i.e. SRCROOT/Resources/Images/Common/, SRCROOT/Resource/Assets/)
+
+## File Structure (.m)
+- Structure
+```objective-c
+imports
+
+related constants
+
+class extension
+
+@implementation
+- dealloc
+- init methods
+- other
+@end
+```
+- Method sections should be separated by #pragma mark - $sectionName
 
 ## Braces, Asterisk
 - Opening curly braces on the same line. Closing - on new line. For short blocks / closures single line can be used.
@@ -59,7 +73,6 @@ for (int i = 0; i < x; i++) { ... }
     SCHSyncronizationDelegate
 >
 ```
-- use [forward declaration](http://railsware.com/blog/2013/08/09/using-forward-declaration-in-your-objective-c-projects/) whenever possible
 
 #### Method Declaration
 - Use single space between +/- and returned type. Any additional spaces in arguments list are not allowed: ```- (void)doSomethingWithString:(NSString *)string flag:(BOOL)flag;```
@@ -130,3 +143,68 @@ NSArray *contentArray = nil;
 }];
 ```
 - There is no space between ```^``` and return type / arguments: ```^(id response){}``` ```^NSUInteger * (id response){}```
+
+## Naming
+In general we're using [Apple Coding Guidelines for Cocoa](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/CodingGuidelines/Articles/NamingBasics.html#//apple_ref/doc/uid/20001281-BBCHBFAH) with several highlights:
+- Three-letters prexif is REQUIRED
+- Methods in non-project class should be prefixed by ```lowercasePrefix_```: ```- (void)sch_performTask:(id)arg```
+
+## Constants
+- Magical numbers are not allowed - constants should be used instead. Exception: constant value, used in local one place with descriptive name. 
+- No "raw" strings. Exception: the same as for magical numbers. 
+- Desirable to use ```extern``` keyword:
+```objective-c
+// SCHNotifier.h
+OBJC_EXTERN NSString * const SCHNotifierDidChangeStateNotification;
+OBJC_EXTERN const CGFloat SCHDefaultAnimationDuration;
+
+// SCHNotifier.m
+
+NSString * const SCHNotifierDidChangeStateNotification = @"com.project.notifier.stateDidChange";
+const CGFloat SCHDefaultAnimationDuration = 0.33;
+```
+
+## Required / recommended best practices
+#### Types Declaration / Usage
+- Use typedef for blocks declaration and custom enums / scalar types
+- Use NSInteger, NSTimeInterval, CGFloat, etc over plain types. Therefore it is easier to migrate to the 64-bits
+
+#### Forward Declaration
+Use [forward declaration](http://railsware.com/blog/2013/08/09/using-forward-declaration-in-your-objective-c-projects/) whenever possible
+
+#### Ivars
+```@public``` ivars not allowed 
+
+#### Properties
+- Use ```copy``` specifier in case if mutability leads to unexpected behaviour (i.e. when NSMutableString passed as NSString and mutated outside of class).
+- Use ```readonly``` for public properties whenever possible to prevent unexpected class usage (i.e. outlet assigned from client code, etc)
+- (iOS only) Use ```nonatimic``` whenever possible to speedup code execution
+- Desirable to access underlying property's ivar only in init/setter/getter
+- Use of @property solely to create _ivar is not recommended and should be prohibited
+
+#### Exceptions handling
+Use exceptions only in really required places. Desirable to use NSError ** and / or return result status (i.e. Success, Fail)
+
+#### Protocols
+- Delegate methods should always pass ```sender``` argument: 
+```objective-c
+@protocol CustomClassDelegate <NSObject>
+
+- (NSInteger)someDelegateMethod:(CustomClassDelegate *)customClass;
+- (void)customClass:(CustomClass *)customClass didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+
+@end
+```
+- Protocol support for properties / vars should be declared explicitly: ```id<Protocol> instance = ...;```, ```@property (nonatomic, weak) id<Protocol> delegate;```
+
+#### Boolean statements
+- Desirable to use implicit equality check: ```if (bar && baz && quux)```
+
+#### Preprocessor usage
+- Prefer c-functions / constants / methods over #define.
+
+#### AppDelegate
+Keep your AppDelegate as clean as possible. Any logic, not related to AppDelegate (database seeding, networking, etc) not allowed. 
+
+#### Clean .pch
+Group required #defines, constants to a separate header (SCHConstants.h, SCHDefines.h). Garbage in .pch not allowed
