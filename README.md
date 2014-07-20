@@ -1,15 +1,15 @@
 # iOS Guidelines
 
 ## Project Structure
-- Organized .xcodeproj: files are grouped by layers (Presentation, Domain/Model, Infrastructure, etc), responsibilities (UI, Model, Logic, Vendor, etc), roles, etc. No flat structure allowed.
+- Organized .xcodeproj: files are grouped by layers (Presentation, Domain/Model, Infrastructure, etc), responsibilities (UI, Model, Logic, Vendor, etc), roles, etc. No flat structure allowed
 - Organized project folder: desirable but not required to keep file structure in sync with .xcodeproj
-- *One .m / .swift == One class*. No extra classes allowed.
-- Localization is required even for case, when you have only one language. Therefore in future it worth nothing to add extra language.
-- Images and other resources (.plist) should be grouped as well (i.e. SRCROOT/Resources/Images/Common/, SRCROOT/Resource/Assets/)
+- *One .m / .swift == One class*. No extra classes allowed
+- Localization is required even for case, when you have only one language. Therefore in future it worth nothing to add extra language
+- Images and other resources (.plist) should be grouped as well (i.e. $SRCROOT/Resources/Images/Common/, $SRCROOT/Resource/Assets/)
 
 ## File Structure (.m)
 - Structure
-```objective-c
+```
 imports
 
 related constants
@@ -30,7 +30,7 @@ class extension
 - Every code block  should be wrapped by ```{}```:
 ```objective-c
 if (statement) {
-  NSLog(@"%@", var);
+    NSLog(@"%@", var);
 }
 ```
 The only exception is short statement and immediate return in the beggining: 
@@ -44,7 +44,7 @@ The only exception is short statement and immediate return in the beggining:
 ## Spaces, Formatting
 #### General
 - Tab consists of 4 spaces
-- Max symbols in row: 120
+- Max symbols in row: *120*
 - Use space after ```if```, ```while```, ```for```  and similar:
 ```objective-c
 if (pointer != someOtherPointer)
@@ -56,7 +56,7 @@ BOOL contentExists = self.content.length > 0;
 for (int i = 0; i < x; i++) { ... }
 ```
 - Alignment: do not align code as ASCII-art.
-- Separate logical code blocks by *1* line wrap. Random number of \n not allowed.
+- Separate logical code blocks by *1* line wrap. Random number of \n not allowed
 
 #### Variable declaration
 - Between Type & Protocol there are no spaces: ```id<NSObject> object = ...;```
@@ -150,8 +150,8 @@ In general we're using [Apple Coding Guidelines for Cocoa](https://developer.app
 - Methods in non-project class should be prefixed by ```lowercasePrefix_```: ```- (void)sch_performTask:(id)arg```
 
 ## Constants
-- Magical numbers are not allowed - constants should be used instead. Exception: constant value, used in local one place with descriptive name. 
-- No "raw" strings. Exception: the same as for magical numbers. 
+- Magical numbers are not allowed - constants should be used instead. Exception: constant value, used in local one place with descriptive name
+- No "raw" strings. Exception: the same as for magical numbers
 - Desirable to use ```extern``` keyword:
 ```objective-c
 // SCHNotifier.h
@@ -201,10 +201,10 @@ Use exceptions only in really required places. Desirable to use NSError ** and /
 - Desirable to use implicit equality check: ```if (bar && baz && quux)```
 
 #### Preprocessor usage
-- Prefer c-functions / constants / methods over #define.
+- Prefer c-functions / constants / methods over #define
 
 #### AppDelegate
-Keep your AppDelegate as clean as possible. Any logic, not related to AppDelegate (database seeding, networking, etc) not allowed. 
+Keep your AppDelegate as clean as possible. Any logic, not related to AppDelegate (database seeding, networking, etc) not allowed 
 
 #### Clean .pch
 Group required #defines, constants to a separate header (SCHConstants.h, SCHDefines.h). Garbage in .pch not allowed
