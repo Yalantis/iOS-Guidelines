@@ -126,7 +126,7 @@ NSAssert(
 
 #### Blocks / Closures Declaration
 - Code inside block / closure aligned by 1 tab
-- Openning and closing braces should be aligned by the first symbol of declaration: 
+- Opening and closing braces should be aligned by the first symbol of declaration: 
 ```objective-c
 dipatch_async(dispatch_get_main_queue(), ^{
     // your code here
@@ -192,7 +192,7 @@ Use exceptions only where it is required. Desirable to use NSError ** and / or r
 ```objective-c
 @protocol CustomClassDelegate <NSObject>
 
-- (NSInteger)someDelegateMethod:(CustomClassDelegate *)customClass;
+- (NSInteger)someDelegateMethod:(CustomClass *)customClass;
 - (void)customClass:(CustomClass *)customClass didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
