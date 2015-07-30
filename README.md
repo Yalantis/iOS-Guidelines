@@ -147,7 +147,7 @@ NSArray *contentArray = nil;
 
 ## Naming
 In general we're using [Apple Coding Guidelines for Cocoa](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/CodingGuidelines/Articles/NamingBasics.html#//apple_ref/doc/uid/20001281-BBCHBFAH) with several highlights:
-- Three-letters prexif is REQUIRED
+- Three-letters prefix is REQUIRED
 - Methods for the non-project class categories should be prefixed by ```lowercasePrefix_```: 
 ```- (void)sch_performTask:(id)arg```
 
@@ -180,7 +180,7 @@ Use [forward declaration](http://railsware.com/blog/2013/08/09/using-forward-dec
 #### Properties
 - Use ```copy``` specifier in case mutability leads to unexpected behaviour (i.e. when NSMutableString passed as NSString and mutated outside of the class)
 - Use ```readonly``` for public properties whenever possible to prevent unexpected class usage (i.e. outlet assigned from client code, etc)
-- (iOS only) Use ```nonatimic``` whenever possible to speedup code execution
+- (iOS only) Use ```nonatomic``` whenever possible to speedup code execution
 - Desirable to access underlying property's ivar only in init/setter/getter
 - Use of @property solely to create _ivar is not recommended and should be prohibited
 
